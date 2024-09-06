@@ -11,7 +11,7 @@ services:
           cpus: '1'
           memory: 100M
   wk-postgres:
-    user: '503'
+    # user: '503'
     image: postgres:${POSTGRES_VERSION}
     environment:
       POSTGRES_USER: user
