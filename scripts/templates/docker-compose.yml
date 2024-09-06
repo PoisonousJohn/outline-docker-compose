@@ -5,8 +5,13 @@ services:
     restart: always
     networks:
       - ${NETWORKS}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
   wk-postgres:
-    # user: '$UID:$GID'
+    user: '503'
     image: postgres:${POSTGRES_VERSION}
     environment:
       POSTGRES_USER: user
@@ -17,6 +22,11 @@ services:
     restart: always
     networks:
       - ${NETWORKS}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
   wk-outline:
     image: outlinewiki/outline:${OUTLINE_VERSION}
     command: sh -c "yarn db:migrate --env production-ssl-disabled && yarn start"
@@ -36,6 +46,11 @@ services:
       - wk-redis
     networks:
       - ${NETWORKS}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 400M
   wk-oidc-server:
     image: vicalloy/oidc-server
     volumes:
@@ -47,6 +62,11 @@ services:
       - ./env.oidc-server
     networks:
       - ${NETWORKS}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
   wk-nginx:
     image: nginx
     ports:
@@ -60,6 +80,11 @@ services:
       - wk-oidc-server
     networks:
       - ${NETWORKS}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
 networks:
   ${NETWORKS}:
     external: ${NETWORKS_EXTERNAL}
