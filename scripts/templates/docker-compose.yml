@@ -26,7 +26,7 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: 100M
+          memory: 200M
   wk-outline:
     image: outlinewiki/outline:${OUTLINE_VERSION}
     command: sh -c "yarn db:migrate --env production-ssl-disabled && yarn start"
@@ -50,7 +50,7 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: 400M
+          memory: 500M
   wk-oidc-server:
     image: vicalloy/oidc-server
     volumes:
@@ -66,7 +66,7 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: 100M
+          memory: 150M
   wk-nginx:
     image: nginx
     ports:
