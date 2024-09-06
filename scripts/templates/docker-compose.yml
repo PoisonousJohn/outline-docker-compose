@@ -6,6 +6,7 @@ services:
     networks:
       - ${NETWORKS}
   wk-postgres:
+    # user: '$UID:$GID'
     image: postgres:${POSTGRES_VERSION}
     environment:
       POSTGRES_USER: user
@@ -16,34 +17,6 @@ services:
     restart: always
     networks:
       - ${NETWORKS}
-##BEGIN MINIO 
-  wk-minio:
-    image: minio/minio:${MINIO_VERSION}
-    volumes:
-      - ./data/minio_root:/minio_root:z
-      - ./data/certs:/root/.minio/certs:z
-    command: "minio server /minio_root"
-    env_file:
-      - ./env.minio
-    restart: always
-    networks:
-      - ${NETWORKS}
-  wk-createbuckets:
-    image: minio/mc:${MINIO_MC_VERSION}
-    depends_on:
-      - wk-minio
-    env_file:
-      - ./env.minio
-    entrypoint: >
-      /bin/sh -c "
-      until (/usr/bin/mc config host add minio http://wk-minio:9000 ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY}) do echo '...waiting...' && sleep 1; done;
-      /usr/bin/mc mb minio/outline-bucket;
-      /usr/bin/mc anonymous set download minio/outline-bucket;
-      exit 0;
-      "
-    networks:
-      - ${NETWORKS}
-##END
   wk-outline:
     image: outlinewiki/outline:${OUTLINE_VERSION}
     command: sh -c "yarn db:migrate --env production-ssl-disabled && yarn start"
@@ -61,9 +34,6 @@ services:
     depends_on:
       - wk-postgres
       - wk-redis
-##BEGIN MINIO 
-      - wk-minio
-##END
     networks:
       - ${NETWORKS}
   wk-oidc-server:
@@ -86,9 +56,6 @@ services:
       - ./data/uc/static_root:/uc/static_root:ro
     restart: always
     depends_on:
-##BEGIN MINIO 
-      - wk-minio
-##END
       - wk-outline
       - wk-oidc-server
     networks:
