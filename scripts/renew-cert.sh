@@ -55,6 +55,6 @@ chmod 600 "$NGINX_CERT_DIR/${DOMAIN}.key"
 
 log "Reloading nginx container..."
 cd "$PROJECT_DIR"
-docker compose exec wk-nginx nginx -s reload
+make reload
 
 log "Done"
