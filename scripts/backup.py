@@ -51,7 +51,7 @@ def main():
 
     today = date.today().strftime("%Y-%m-%d")
     archive_name = f"backup{today}.zip"
-    remote_name = f"backup{today}.zip.upload"
+    remote_name = f"backups/backup{today}.zip.upload"
     archive_path = Path(tempfile.gettempdir()) / archive_name
 
     print("Stopping services...")
