@@ -12,7 +12,7 @@ if [ -f "$SCRIPT_DIR/config.sh" ]; then
 fi
 
 DOMAIN="${1:-${CERTBOT_DOMAIN:-}}"
-EMAIL="${CERTBOT_EMAIL:-}"
+EMAIL="${2:-${CERTBOT_EMAIL:-}}"
 
 if [ -z "$DOMAIN" ]; then
     echo "ERROR: domain not set. Pass it as argument or set CERTBOT_DOMAIN in config.sh" >&2
